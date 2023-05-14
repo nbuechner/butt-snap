@@ -133,7 +133,6 @@ parts:
     - libglx0
     - libgomp1
     - libisl23
-    - libitm1
     - libjpeg-turbo8
     - libjpeg8
     - libllvm15
@@ -194,7 +193,6 @@ parts:
     - x11proto-dev
     - xorg-sgml-doctools
     - xtrans-dev
-
 
    stage-packages:
     - alsa-topology-conf
