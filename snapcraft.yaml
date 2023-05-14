@@ -1,0 +1,227 @@
+name: butt # you probably want to 'snapcraft register <name>'
+base: core22 # the base snap is the execution environment for this snap
+version: '1.3.7' # just for humans, typically '1.2+git' or '1.3.2'
+summary: butt (broadcast using this tool) is an easy to use streaming tool.
+description: |
+   butt (broadcast using this tool) is an easy to use, multi OS streaming tool.
+   It supports ShoutCast and IceCast and runs on Linux, MacOS and Windows.
+   The main purpose of butt is to stream live audio data from your computers Mic or Line input
+   to an Shoutcast or Icecast server. Recording is also possible.
+   It is NOT intended to be a server by itself or automatically stream a set of audio files.
+
+grade: stable # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
+
+layout:
+  /usr/share/alsa:
+     bind: $SNAP/usr/share/alsa
+  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib:
+    bind: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib
+
+apps:
+  butt:
+    command: usr/local/bin/butt
+    command-chain: ["snap/command-chain/alsa-launch"]
+    plugs:
+       - home
+       - x11
+       - desktop
+       - network
+       - audio-playback
+       - audio-record
+       - alsa
+       - shared-memory
+
+    extensions: [ gnome ]
+    environment:
+       DISABLE_WAYLAND: 1
+
+plugs:
+  shared-memory:
+    private: true
+
+parts:
+  alsa-mixin:
+     plugin: dump
+     source: https://github.com/diddlesnaps/snapcraft-alsa.git
+     source-subdir: snapcraft-assets
+     build-packages:
+       - libasound2-dev
+     stage-packages:
+       - libasound2
+       - libasound2-plugins
+       - yad
+     stage:
+       - etc/asound.conf
+       - snap/command-chain/alsa-launch
+       - usr/bin/yad*
+       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib
+       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libasound*
+       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libdnsfile*
+       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libFLAC*
+       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libjack*
+       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libpulse*
+       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libsamplerate*
+       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libspeex*
+       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libvorbis*
+       - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
+
+  main:
+   source: https://nav.dl.sourceforge.net/project/butt/butt/butt-0.1.37/butt-0.1.37.tar.gz
+   plugin: autotools
+   after: [alsa-mixin]
+   build-packages:
+    - libcurl4-openssl-dev
+    - libfdk-aac-dev
+    - autoconf
+    - automake
+    - autopoint
+    - autotools-dev
+    - build-essential
+    - bzip2
+    - cpp-11
+    - debhelper
+    - debugedit
+    - dh-autoreconf
+    - dh-strip-nondeterminism
+    - dwz
+    - fontconfig-config
+    - fonts-dejavu-core
+    - g++
+    - g++-11
+    - gcc-11
+    - gettext
+    - intltool-debian
+    - libarchive-zip-perl
+    - libasan6
+    - libasound2
+    - libasound2-data
+    - libasound2-dev
+    - libatomic1
+    - libc-dev-bin
+    - libc6-dev
+    - libcairo2
+    - libcc1-0
+    - libcrypt-dev
+    - libdbus-1-dev
+    - libdrm-amdgpu1
+    - libdrm-nouveau2
+    - libdrm-radeon1
+    - libfile-stripnondeterminism-perl
+    - libflac-dev
+    - libflac8
+    - libfltk-cairo1.3
+    - libfltk-forms1.3
+    - libfltk-gl1.3
+    - libfltk-images1.3
+    - libfltk1.3
+    - libfltk1.3-dev
+    - libfontconfig1
+    - libgcc-11-dev
+    - libgl1
+    - libgl1-mesa-dri
+    - libglapi-mesa
+    - libglvnd0
+    - libglx-mesa0
+    - libglx0
+    - libgomp1
+    - libisl23
+    - libitm1
+    - libjpeg-turbo8
+    - libjpeg8
+    - libllvm15
+    - liblsan0
+    - libmp3lame-dev
+    - libmp3lame0
+    - libmpc3
+    - libnsl-dev
+    - libogg-dev
+    - libogg0
+    - libopus-dev
+    - libopus0
+    - libpixman-1-0
+    - libportaudio2
+    - libportaudiocpp0
+    - libpthread-stubs0-dev
+    - libquadmath0
+    - libsamplerate0
+    - libsamplerate0-dev
+    - libsensors-config
+    - libsensors5
+    - libssl-dev
+    - libstdc++-11-dev
+    - libsub-override-perl
+    - libtirpc-dev
+    - libtool
+    - libtsan0
+    - libubsan1
+    - libvorbis-dev
+    - libvorbis0a
+    - libvorbisenc2
+    - libvorbisfile3
+    - libx11-dev
+    - libx11-xcb1
+    - libxau-dev
+    - libxcb-dri2-0
+    - libxcb-dri3-0
+    - libxcb-glx0
+    - libxcb-present0
+    - libxcb-render0
+    - libxcb-shm0
+    - libxcb-sync1
+    - libxcb-xfixes0
+    - libxcb1-dev
+    - libxcursor1
+    - libxdmcp-dev
+    - libxfixes3
+    - libxft2
+    - libxinerama1
+    - libxrender1
+    - libxshmfence1
+    - libxxf86vm1
+    - linux-libc-dev
+    - lto-disabled-list
+    - m4
+    - make
+    - pkg-config
+    - portaudio19-dev
+    - rpcsvc-proto
+    - uuid-dev
+    - x11proto-dev
+    - xorg-sgml-doctools
+    - xtrans-dev
+
+
+   stage-packages:
+    - alsa-topology-conf
+    - alsa-ucm-conf
+    - fontconfig-config
+    - fonts-dejavu-core
+    - libasound2
+    - libasound2-data
+    - libflac8
+    - libfltk-images1.3
+    - libfltk1.3
+    - libfontconfig1
+    - libjpeg-turbo8
+    - libjpeg8
+    - libmp3lame0
+    - libogg0
+    - libopus0
+    - libportaudio2
+    - libsamplerate0
+    - libvorbis0a
+    - libvorbisenc2
+    - libxcursor1
+    - libxfixes3
+    - libxft2
+    - libxinerama1
+    - libxrender1
+    - desktop-file-utils
+    - libfdk-aac2
+
+lint:
+   ignore:
+     - library:
+       - usr/lib/*/libpulse*
+       - usr/lib/*/libjack*
