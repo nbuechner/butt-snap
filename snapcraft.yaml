@@ -137,7 +137,6 @@ parts:
     - libjpeg-turbo8
     - libjpeg8
     - libllvm15
-    - liblsan0
     - libmp3lame-dev
     - libmp3lame0
     - libmpc3
