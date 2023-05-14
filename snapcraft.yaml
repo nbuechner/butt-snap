@@ -159,7 +159,6 @@ parts:
     - libsub-override-perl
     - libtirpc-dev
     - libtool
-    - libtsan0
     - libubsan1
     - libvorbis-dev
     - libvorbis0a
