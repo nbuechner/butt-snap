@@ -150,7 +150,6 @@ parts:
     - libportaudio2
     - libportaudiocpp0
     - libpthread-stubs0-dev
-    - libquadmath0
     - libsamplerate0
     - libsamplerate0-dev
     - libsensors-config
